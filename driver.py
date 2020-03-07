@@ -1,13 +1,13 @@
 import sys
 from CSP import CSP
-
+from CSP import Constraint
 
 if __name__ == '__main__':
 
 	if len(sys.argv) <= 1:
 		print("Enter file names for variable and constraint inputs")
 		exit()
-	
+
 	in_var = sys.argv[1]
 	in_cons = sys.argv[2]
 
@@ -25,12 +25,13 @@ if __name__ == '__main__':
 		print(var, domain_values)
 		variables.append(var)
 		domains[var] = domain_values
-	
+
 	constraints = []
 	print('parsing constraints...')
 	for line in cons_file.readlines():
 		line_split = line.strip().split(' ')
-		constraints.append(line_split)
+		con = Constraint(line_split)
+		constraints.append(con)
 		print(line_split)
 
 	csp = CSP(variables, domains, constraints)
