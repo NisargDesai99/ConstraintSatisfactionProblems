@@ -20,9 +20,13 @@ if __name__ == '__main__':
 	print('parsing variables...')
 	for line in var_file.readlines():
 		line_split = line.strip().split(':')
+
 		var = line_split[0]
-		domain_values = line_split[1].strip().split(' ')
+		domain_values_str = line_split[1].strip().split(' ')
+		domain_values = [int(item) for item in domain_values_str]
+
 		print(var, domain_values)
+
 		variables.append(var)
 		domains[var] = domain_values
 
@@ -35,7 +39,7 @@ if __name__ == '__main__':
 		print(line_split)
 
 	csp = CSP(variables, domains, constraints)
-
+	csp.backtrack()
 
 
 
