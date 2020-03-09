@@ -70,13 +70,14 @@ class CSP:
 			else:
 				self.constraint_involvement[con.var2].append(con)
 
-		print('variables:', self.variables)
-		print('constraints:', self.constraints)
-		print('constraint_involvement:', self.constraint_involvement)
+		# print('variables:', self.variables)
+		# print('domains:', self.domains)
+		# print('constraints:', self.constraints)
+		# print('constraint_involvement:', self.constraint_involvement)
 
 	def __select_unassigned_variable(self, assignment):
 		if len(assignment) == len(self.variables):
-			print('all variables already selected')
+			# print('all variables already selected')
 			exit()
 
 		final_var = ''
@@ -105,6 +106,7 @@ class CSP:
 			max_involvement = -1
 			for (constraint_var, constraint_list) in self.constraint_involvement.items():
 				if constraint_var in assignment:
+					# print('constraint_var', constraint_var, 'in assignment')
 					continue
 				curr_involvement = len(constraint_list)
 				if curr_involvement > max_involvement:
@@ -120,15 +122,18 @@ class CSP:
 					if var in assignment:
 						continue
 					else:
+						# print('alphabetical ordering applied for:', var)
 						return var
 
 			else:
+				# print('degree heuristic applied for:', max_involved_variable, '| max involvement:', max_involvement)
 				final_var = max_involved_variable
 		else:
+			# print('minimum remaining values heuristic applied for:', min_variable)
 			final_var = min_variable
 
 		if final_var == '':
-			print('CSP.__select_unassigned_variable(): error selecting variable')
+			# print('CSP.__select_unassigned_variable(): error selecting variable')
 			# stop program
 			exit()
 
@@ -240,15 +245,25 @@ class CSP:
 		# return True
 
 
+	def forward_checking(self, assignment):
+		# print('in forward checking')
+		pass
+		
+
 	def backtrack(self):
-		return self.__recursive_backtrack({})
+		return self.__recursive_backtrack({}, '', 1)
 
 
-	def __recursive_backtrack(self, assignment):
+	def __recursive_backtrack(self, assignment, str_bldr, step_counter):
 		complete_assignment = self.__is_assignment_complete(assignment)
 
 		if complete_assignment:
-			return assignment
+			str_bldr += str(step_counter) + '. ' + (''.join( [(str(key) + '=' + str(value) + ',') for (key,value) in assignment.items()] ))
+			str_bldr = str_bldr[:-1]
+			str_bldr += '  solution'
+			str_bldr += '\n'
+			step_counter += 1
+			return (assignment, str_bldr)
 
 		selected_var = self.__select_unassigned_variable(assignment)
 		# print('selected var:', selected_var)
@@ -260,12 +275,18 @@ class CSP:
 			# print('\nassignment -', selected_var, ':', value, '\n')
 
 			if self.is_assignment_consistent(assignment, selected_var):
-				result = self.__recursive_backtrack(assignment)
+				result = self.__recursive_backtrack(assignment, str_bldr, step_counter)
 				# print('checking validity of: ', assignment)
 				# print('result:', result)
 				if not result == None:
-					return result
-				
+					return (result[0], result[1])
+			else:
+				str_bldr += str(step_counter) + '. ' + (''.join( [(str(key) + '=' + str(value) + ',') for (key,value) in assignment.items()] ))
+				str_bldr = str_bldr[:-1]
+				str_bldr += '  failure'
+				str_bldr += '\n'
+				step_counter += 1
+
 			del assignment[selected_var]
 
 		return None

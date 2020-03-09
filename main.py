@@ -1,3 +1,7 @@
+# Nisarg Desai npd10030
+# Sanketh Reddy spr150430
+
+
 import sys
 from CSP import CSP
 from CSP import Constraint
@@ -18,7 +22,7 @@ if __name__ == '__main__':
 	variables = []
 	domains = {}
 
-	print('parsing variables and domains...')
+	# print('parsing variables and domains...')
 	for line in var_file.readlines():
 		line_split = line.strip().split(':')
 
@@ -32,7 +36,7 @@ if __name__ == '__main__':
 		domains[var] = domain_values
 
 	constraints = []
-	print('parsing constraints...')
+	# print('parsing constraints...')
 	for line in cons_file.readlines():
 		line_split = line.strip().split(' ')
 		con = Constraint(line_split)
@@ -41,8 +45,11 @@ if __name__ == '__main__':
 
 	csp = CSP(variables, domains, constraints, procedure)
 	solution = csp.backtrack()
-	print(solution)
+	print(solution[1])
 
+	out_file = open('ex-'+procedure+'.out', 'w+')
+	out_file.write(solution[1])
+	out_file.close()
 
 
 
