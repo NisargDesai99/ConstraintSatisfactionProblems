@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
 	in_var = sys.argv[1]
 	in_cons = sys.argv[2]
+	procedure = sys.argv[3]
 
 	var_file = open(in_var)
 	cons_file = open(in_cons)
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 	variables = []
 	domains = {}
 
-	print('parsing variables...')
+	print('parsing variables and domains...')
 	for line in var_file.readlines():
 		line_split = line.strip().split(':')
 
@@ -25,7 +26,7 @@ if __name__ == '__main__':
 		domain_values_str = line_split[1].strip().split(' ')
 		domain_values = [int(item) for item in domain_values_str]
 
-		print(var, domain_values)
+		# print(var, domain_values)
 
 		variables.append(var)
 		domains[var] = domain_values
@@ -36,10 +37,11 @@ if __name__ == '__main__':
 		line_split = line.strip().split(' ')
 		con = Constraint(line_split)
 		constraints.append(con)
-		print(line_split)
+		# print(line_split)
 
-	csp = CSP(variables, domains, constraints)
-	csp.backtrack()
+	csp = CSP(variables, domains, constraints, procedure)
+	solution = csp.backtrack()
+	print(solution)
 
 
 
