@@ -160,10 +160,10 @@ class CSP:
 		vals_removed_per_var = {}
 
 		for val in self.domains[given_var]:
-			vals_removed_per_var[val] = self.__count_values_removed(given_var, val)
-		
+			vals_removed_per_var[val] = self.__count_values_removed(given_var, val, assignment)
+
 		sorted_vals_removed = {k: v for k, v in sorted(vals_removed_per_var.items(), key=lambda item: item[1])}
-		# print(sorted_vals_removed)
+		# print(given_var, sorted_vals_removed)
 
 		# print('iterating over constraints that "' + given_var + '" is involved in')
 		# for constraint in self.constraint_involvement[given_var]:
@@ -185,10 +185,12 @@ class CSP:
 
 		# 			vals_removed_per_var[val] += self.__count_values_removed({given_var:val, opposing_var:opposing_val})
 
-		return [key for (key,val) in sorted_vals_removed.items()]
+		temp_list = [key for key in sorted_vals_removed.keys()]
+		# print(' | value chosen:', temp_list[0])
+		return temp_list
 
-	def __count_values_removed(self, given_var, val):
-		
+	def __count_values_removed(self, given_var, val, current_assignment):
+
 		num_removed_vals = 0
 		temp_assign = {given_var : val}
 
@@ -198,11 +200,13 @@ class CSP:
 		for constraint in self.constraint_involvement[given_var]:
 			# print('checking constraint:', constraint)
 			adjacent_var = constraint.get_opposing_var(given_var)
+			if adjacent_var in current_assignment:
+				continue
 			for adjacent_val in self.domains[adjacent_var]:
 				temp_assign[adjacent_var] = adjacent_val
 				if not constraint.satisfied(temp_assign):
 					num_removed_vals += 1
-		
+
 		# print('(' + given_var + ' : ' + str(val) + ') = ' + str(num_removed_vals))
 		return num_removed_vals
 
@@ -215,7 +219,7 @@ class CSP:
 	# def __count_values_removed(self, temp_assignment):
 	# 	print('in count values removed:', temp_assignment)
 	# 	return 0
-	
+
 	def is_assignment_consistent(self, assignment, variable):
 
 		is_consistent = True
@@ -237,10 +241,15 @@ class CSP:
 				continue
 			satisfied = constraint.satisfied(assignment)
 			# print(constraint, satisfied)
+			# print('is_consistent =', is_consistent, ' satisfied =', satisfied)
+			# print('is_consistent and satisfied:', is_consistent and satisfied)
 			is_consistent = (is_consistent and satisfied) if count == 0 else (satisfied)
+			# if constraint.var1 == 'C' or constraint.var2 == 'C':
+			# 	print(assignment, '|', constraint, '|', satisfied, '| is_consistent:', is_consistent, '| count:', count)
 			count += 1
 
-		# print('is_consistent:', is_consistent)
+		# if constraint.var1 == 'C' or constraint.var2 == 'C':
+		# 	print('is_consistent:', is_consistent)
 		return is_consistent
 		# return True
 
@@ -248,7 +257,7 @@ class CSP:
 	def forward_checking(self, assignment):
 		# print('in forward checking')
 		pass
-		
+
 
 	def backtrack(self):
 		return self.__recursive_backtrack({}, '', 1)
