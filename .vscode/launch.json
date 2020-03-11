@@ -12,9 +12,12 @@
             "console": "integratedTerminal",
             "stopOnEntry": true,
             "args": [
-                "inputs/ex3.var",
-                "inputs/ex3.con",
+                "../tests/complex.var",
+                "../tests/complex.con",
                 "none"
+                // "inputs/ex3.var",
+                // "inputs/ex3.con",
+                // "none"
             ]
         }
     ]

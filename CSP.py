@@ -74,29 +74,20 @@ class CSP:
 
 		final_var = ''
 		# most constrained variable heuristic
-		min_len = 100000
-		min_variable = ''
-		num_changes = 0    # keeps track of number of changes to min_len, if it is 1 it means there was a tie
+		len_dict = {}
 		for (key,val) in self.domains.items():
-			# TODO: ignore variables that have already been selected
 			if key in assignment:
 				continue
-			curr = len(val)
-			if curr < min_len:
-				min_variable = key
-				min_len = curr
-				num_changes += 1
+			len_dict[key] = len(val)
+		min_len = min(len_dict.values())
+		min_var_tied_keys = [key for key,val in len_dict.items() if val == min_len]
 
 		# there is a tie, so use most constrainING variable
-		if num_changes == 1:
-
-			num_changes = 0    # in case there is a tie with this heuristic as well
-			max_involved_variable = ''
-			max_involvement = -1
+		if len(min_var_tied_keys) > 1:
+			max_involved_dict = {}
 			for (constraint_var, constraint_list) in self.constraint_involvement.items():
 				if constraint_var in assignment:
 					continue
-
 				# calcuate current constraint involvement of constraint_var
 				curr_involvement = 0
 				for con in constraint_list:
@@ -107,24 +98,23 @@ class CSP:
 						continue
 					curr_involvement += 1
 
-				if curr_involvement > max_involvement:
-					max_involvement = curr_involvement
-					max_involved_variable = constraint_var
-					num_changes += 1
+				max_involved_dict[constraint_var] = curr_involvement
+				max_involvement = max(max_involved_dict.values())
+				max_involvement_tied_keys =[key for key,val in max_involved_dict.items() if val == max_involvement]
 
-			# TODO: sort alphabetically
-			if num_changes == 1:
-				x = sorted(self.variables)
-				for var in x:
+			if len(max_involvement_tied_keys) > 1:
+				# x = sorted(self.variables)
+				sorted_tied_vars = [item for item in sorted(max_involvement_tied_keys)]
+				for var in sorted_tied_vars:
 					if var in assignment:
 						continue
 					else:
 						return var
 
 			else:
-				final_var = max_involved_variable
+				final_var = max_involvement_tied_keys[0]
 		else:
-			final_var = min_variable
+			final_var = min_var_tied_keys[0]
 
 		if final_var == '':
 			print('CSP.__select_unassigned_variable(): error selecting variable')
@@ -177,7 +167,6 @@ class CSP:
 
 
 	def is_assignment_consistent(self, assignment, variable):
-
 		is_consistent = True
 		count = 0
 

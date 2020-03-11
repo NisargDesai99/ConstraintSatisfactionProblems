@@ -47,8 +47,8 @@ if __name__ == '__main__':
 	solution = csp.backtrack()
 	print(solution[2])
 
-	# out_file = open('ex-'+procedure+'.out', 'w+')
-	# out_file.write(solution[1])
+	# out_file = open('complex.out', 'w+')
+	# out_file.write(solution[2])
 	# out_file.close()
 
 
