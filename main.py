@@ -30,7 +30,7 @@ if __name__ == '__main__':
 		domain_values_str = line_split[1].strip().split(' ')
 		domain_values = [int(item) for item in domain_values_str]
 
-		print(var, domain_values)
+		# print(var, domain_values)
 
 		variables.append(var)
 		domains[var] = domain_values
@@ -41,11 +41,11 @@ if __name__ == '__main__':
 		line_split = line.strip().split(' ')
 		con = Constraint(line_split)
 		constraints.append(con)
-		print(line_split)
+		# print(line_split)
 
 	csp = CSP(variables, domains, constraints, procedure)
 	solution = csp.backtrack()
-	print(solution[1])
+	print(solution[2])
 
 	# out_file = open('ex-'+procedure+'.out', 'w+')
 	# out_file.write(solution[1])
