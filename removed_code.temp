@@ -1,0 +1,41 @@
+
+        # print('iterating over constraints that "' + given_var + '" is involved in')
+		# for constraint in self.constraint_involvement[given_var]:
+		# 	print(given_var, ':', constraint)
+
+		# 	# iterate over each constraint
+		# 	# 	iterate over each value for given variable?
+		# 	#		iterate over each value for opposing variable (ex: given variable = F and constraint = F > A => opposing variable = A)
+		# 	#			check if this value satisfies the constraint... if it does not then increment num_invalid_values
+
+		# 	for val in self.domains[given_var]:
+		# 		print('val in domain of ' + given_var + ': ' + str(val))
+
+		# 		opposing_var = constraint.get_opposing_var(given_var)
+		# 		# self.__count_values_removed((given_var,val), opposing_var)
+
+		# 		for opposing_val in self.domains[opposing_var]:
+		# 			print('opposing val in domain of ' + opposing_var + ': ' + str(opposing_val))
+
+		# 			vals_removed_per_var[val] += self.__count_values_removed({given_var:val, opposing_var:opposing_val})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

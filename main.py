@@ -1,10 +1,9 @@
-# Nisarg Desai npd10030
-# Sanketh Reddy spr150430
-
+# CS 4365 - Artificial Intelligence
+# Nisarg Desai - npd160030
+# Sanketh Reddy - spr150430
 
 import sys
-from CSP import CSP
-from CSP import Constraint
+import lib
 
 if __name__ == '__main__':
 
@@ -22,7 +21,6 @@ if __name__ == '__main__':
 	variables = []
 	domains = {}
 
-	# print('parsing variables and domains...')
 	for line in var_file.readlines():
 		line_split = line.strip().split(':')
 
@@ -30,26 +28,18 @@ if __name__ == '__main__':
 		domain_values_str = line_split[1].strip().split(' ')
 		domain_values = [int(item) for item in domain_values_str]
 
-		# print(var, domain_values)
-
 		variables.append(var)
 		domains[var] = domain_values
 
 	constraints = []
-	# print('parsing constraints...')
 	for line in cons_file.readlines():
 		line_split = line.strip().split(' ')
-		con = Constraint(line_split)
+		con = lib.Constraint(line_split)
 		constraints.append(con)
-		# print(line_split)
 
-	csp = CSP(variables, domains, constraints, procedure)
-	solution = csp.backtrack()
+	# initialize csp and solve it
+	csp = lib.CSP(variables, domains, constraints, procedure)
+	solution = lib.backtrack(csp)
 	print(solution[2])
-
-	# out_file = open('complex.out', 'w+')
-	# out_file.write(solution[2])
-	# out_file.close()
-
 
 

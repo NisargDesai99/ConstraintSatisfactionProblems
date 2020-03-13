@@ -12,12 +12,24 @@
             "console": "integratedTerminal",
             "stopOnEntry": true,
             "args": [
-                "../tests/complex.var",
-                "../tests/complex.con",
-                "none"
+                // "inputs/ex1.var",
+                // "inputs/ex1.con",
+                // "fc"
+                // "inputs/ex2.var",
+                // "inputs/ex2.con",
+                // "fc"
+                // "inputs/ex3.var",
+                // "inputs/ex3.con",
+                // "fc"
+                // "inputs/ex1.var",
+                // "inputs/ex1.con",
+                // "none"
                 // "inputs/ex3.var",
                 // "inputs/ex3.con",
                 // "none"
+                "../tests/complex.var",
+                "../tests/complex.con",
+                "none"
             ]
         }
     ]
